@@ -1,0 +1,24 @@
+---
+apiVersion: external-secrets.io/v1beta1
+kind: SecretStore
+metadata:
+  name: vault-backendtoken
+  namespace: vault
+spec:
+  provider:
+    vault:
+      server: "https://vault.vault:8200"
+      path: "secret"
+      version: "v2"
+      caProvider:
+        # Can be Secret or ConfigMap
+        type: "Secret"
+        name: "vault-ha-tls"
+        key: "vault.ca"
+      auth:
+        # points to a secret that contains a vault token
+        # https://www.vaultproject.io/docs/auth/token
+        tokenSecretRef:
+          name: "vault-token"
+          key: "token"
+
